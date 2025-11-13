@@ -1,0 +1,45 @@
+services:
+  # Multi-stage Node.js (optimizado)
+  app-optimizado:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    container_name: multi-stage-node-optimizado
+    labels:
+      - "description=Node.js Multi-Stage Build (Optimizado)"
+
+  # Dockerfile tradicional Node.js (no optimizado)
+  app-tradicional:
+    build:
+      context: .
+      dockerfile: Dockerfile.tradicional
+    ports:
+      - "3001:3000"
+    container_name: multi-stage-node-tradicional
+    labels:
+      - "description=Node.js Build Tradicional (No Optimizado)"
+
+  # Multi-stage Python
+  app-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    ports:
+      - "5000:5000"
+    container_name: multi-stage-python
+    labels:
+      - "description=Python Multi-Stage Build"
+
+  # Multi-stage Go
+  app-go:
+    build:
+      context: .
+      dockerfile: Dockerfile.go
+    ports:
+      - "8080:8080"
+    container_name: multi-stage-go
+    labels:
+      - "description=Go Multi-Stage Build"
+

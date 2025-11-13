@@ -1,0 +1,51 @@
+# VirtualService de Istio - Implementación de Canary Deployment
+# Canary = Despliega nueva versión a un pequeño porcentaje de tráfico
+# Monitorea métricas y expande gradualmente si todo va bien
+# Rollback rápido si hay problemas
+# Requiere Istio instalado en el cluster
+
+apiVersion: networking.istio.io/v1alpha3  # Versión de la API de Istio
+kind: VirtualService  # Tipo de recurso: VirtualService (routing de Istio)
+metadata:              # Metadatos del VirtualService
+  name: canary         # Nombre del VirtualService
+spec:                  # Especificación del VirtualService
+  hosts:               # Hosts a los que aplica este VirtualService
+  - myapp               # Nombre del Service (debe existir)
+    # Este VirtualService controla el routing para el Service "myapp"
+  http:                 # Configuración de routing HTTP
+  # Primera regla: Routing basado en headers (para testing manual)
+  - match:              # Condición de coincidencia
+    - headers:          # Coincidencia basada en headers HTTP
+        canary:         # Header HTTP llamado "canary"
+          exact: "true" # Valor exacto "true"
+          # Si el request tiene header "canary: true", se enruta a v2
+          # Útil para testing: curl -H "canary: true" http://myapp
+    route:              # Reglas de routing cuando hay coincidencia
+    - destination:      # Destino del routing
+        host: myapp     # Service de destino
+        subset: v2     # Subset (versión) v2 (nueva versión)
+          # Los subsets se definen en DestinationRule de Istio
+          # v2 = nueva versión en canary
+      weight: 100       # 100% del tráfico con este header va a v2
+        # Todo el tráfico con header "canary: true" va a la nueva versión
+  # Segunda regla: Routing por peso (para canary automático)
+  - route:              # Reglas de routing (sin match = aplica a todo el tráfico restante)
+    - destination:      # Primer destino
+        host: myapp     # Service de destino
+        subset: v1      # Subset v1 (versión actual/estable)
+          # v1 = versión actual en producción
+      weight: 90        # 90% del tráfico va a v1 (versión estable)
+        # La mayoría del tráfico sigue yendo a la versión estable
+    - destination:      # Segundo destino
+        host: myapp     # Service de destino
+        subset: v2      # Subset v2 (nueva versión)
+          # v2 = nueva versión en canary
+      weight: 10        # 10% del tráfico va a v2 (nueva versión)
+        # Solo 10% del tráfico va a la nueva versión para probarla
+        # Flujo típico:
+        # 1. Despliega v2 con 10% de tráfico
+        # 2. Monitorea métricas (errores, latencia, etc.)
+        # 3. Si todo va bien, aumenta a 25%, 50%, 100%
+        # 4. Si hay problemas, rollback (weight: 0 para v2)
+        # Nota: Requiere DestinationRule de Istio para definir los subsets v1 y v2
+

@@ -1,0 +1,19 @@
+# Chart.yaml - Metadata del Chart de Helm
+# Define información sobre el Chart (paquete de Helm)
+# Similar a package.json en Node.js o requirements.txt en Python
+
+apiVersion: v2  # Versión de la API de Helm Charts (v2 es la versión actual)
+name: my-app    # Nombre del Chart (debe ser único en el repositorio)
+description: A Helm chart for my application  # Descripción del Chart
+type: application  # Tipo de Chart: application (aplicación) o library (biblioteca reutilizable)
+version: 0.1.0  # Versión del Chart (sigue semver: major.minor.patch)
+appVersion: "1.0.0"  # Versión de la aplicación que despliega este Chart
+  # Ejemplo: Si despliega nginx:1.21, appVersion sería "1.21"
+dependencies:   # Dependencias del Chart (otros Charts que necesita)
+  - name: postgresql  # Nombre del Chart dependiente
+    version: "11.0.0"  # Versión del Chart dependiente
+    repository: "https://charts.bitnami.com/bitnami"  # Repositorio donde está el Chart
+    condition: postgresql.enabled  # Condición para instalar (si postgresql.enabled es true)
+      # Si condition es false, la dependencia no se instala
+      # Ejemplo: Solo instalar postgresql si el usuario lo habilita
+

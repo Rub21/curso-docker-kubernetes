@@ -1,0 +1,34 @@
+# Ingress con cert-manager (Certificados Automáticos)
+# cert-manager gestiona certificados automáticamente usando Let's Encrypt
+# Requiere que cert-manager esté instalado en el cluster
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para Ingress
+kind: Ingress                      # Tipo de recurso: Ingress
+metadata:                          # Metadatos del Ingress
+  name: cert-manager-ingress       # Nombre del Ingress
+  annotations:                     # Anotaciones específicas del Ingress Controller
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # ClusterIssuer de cert-manager
+      # cert-manager detecta esta anotación y solicita certificado automáticamente
+      # "letsencrypt-prod" debe ser un ClusterIssuer configurado en el cluster
+      # Let's Encrypt es gratuito y renovación automática
+spec:                              # Especificación del Ingress
+  tls:                             # Configuración TLS/SSL
+  - hosts:                         # Lista de hosts para este certificado
+    - example.com                  # Dominio que usará este certificado
+    secretName: example-com-tls    # Nombre del Secret donde cert-manager guardará el certificado
+      # cert-manager crea este Secret automáticamente con el certificado
+      # No necesitas crear el Secret manualmente
+  rules:                           # Reglas de routing
+  - host: example.com              # Dominio (debe coincidir con el host en tls)
+    http:                          # Configuración HTTP
+      paths:                       # Rutas
+      - path: /                    # Ruta raíz
+        pathType: Prefix           # Tipo: Prefix
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: web-service      # Service
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80
+              # Flujo: cert-manager detecta anotación → solicita certificado → crea Secret → Ingress usa certificado
+              # Renovación automática antes de expirar
+

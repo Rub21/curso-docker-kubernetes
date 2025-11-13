@@ -1,0 +1,24 @@
+# Ingress Básico - Ejemplo simple de un Ingress
+# Expone un Service HTTP/HTTPS externamente con routing basado en host y path
+# Requiere que un Ingress Controller esté instalado en el cluster
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para Ingress (networking.k8s.io/v1 es la versión estable)
+kind: Ingress                      # Tipo de recurso: Ingress (routing HTTP/HTTPS)
+metadata:                          # Metadatos del Ingress
+  name: example-ingress            # Nombre del Ingress (debe ser único en el namespace)
+spec:                              # Especificación del Ingress
+  rules:                           # Lista de reglas de routing (cada regla define cómo enrutar tráfico)
+  - host: example.com              # Dominio que coincide con esta regla (opcional, si no especificas aplica a todos los hosts)
+    http:                          # Configuración HTTP para este host
+      paths:                       # Lista de rutas (paths) para este host
+      - path: /                    # Ruta que coincide (en este caso, la ruta raíz)
+        pathType: Prefix           # Tipo de coincidencia: Prefix (coincide con prefijo)
+        # Prefix = / coincide con /, /api, /users, etc.
+        # Otros tipos: Exact (coincidencia exacta), ImplementationSpecific
+        backend:                   # Service al que enrutar cuando hay coincidencia
+          service:                 # Referencia al Service
+            name: web-service      # Nombre del Service (debe existir en el mismo namespace)
+            port:                  # Puerto del Service
+              number: 80           # Número del puerto del Service
+              # El Ingress Controller enruta tráfico a este Service cuando hay coincidencia
+

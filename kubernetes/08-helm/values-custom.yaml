@@ -1,0 +1,17 @@
+# values-custom.yaml - Ejemplo de archivo de valores personalizado
+# Los usuarios pueden crear archivos como este para sobrescribir valores por defecto
+# Se usa con: helm install my-app ./my-app -f values-custom.yaml
+
+# Sobrescribe valores del values.yaml por defecto
+replicaCount: 5  # Cambiar réplicas de 3 a 5
+
+service:
+  type: LoadBalancer  # Cambiar tipo de Service de ClusterIP a LoadBalancer
+  port: 80
+
+# Valores adicionales que no están en values.yaml por defecto
+# Se pueden usar en templates si están definidos
+# image:
+#   repository: nginx
+#   tag: "1.22"  # Cambiar versión de nginx
+

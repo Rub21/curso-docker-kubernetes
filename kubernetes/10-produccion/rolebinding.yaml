@@ -1,0 +1,24 @@
+# RoleBinding - Asigna un Role a usuarios, grupos o ServiceAccounts
+# Conecta un Role con subjects (quién tiene los permisos)
+# Los permisos aplican solo al namespace especificado
+
+apiVersion: rbac.authorization.k8s.io/v1  # Versión de la API para RBAC
+kind: RoleBinding  # Tipo de recurso: RoleBinding (asigna Role a subjects)
+metadata:           # Metadatos del RoleBinding
+  name: read-pods   # Nombre del RoleBinding
+  namespace: default  # Namespace al que aplica (debe coincidir con el Role)
+spec:               # Especificación del RoleBinding
+  subjects:         # Lista de subjects (quién recibe los permisos)
+  - kind: User      # Tipo de subject: User (usuario)
+    name: jane       # Nombre del usuario
+    apiGroup: rbac.authorization.k8s.io  # Grupo de API para RBAC
+    # Otros tipos de subjects:
+    # - kind: Group (grupo de usuarios)
+    # - kind: ServiceAccount (cuenta de servicio)
+  roleRef:          # Referencia al Role a asignar
+    kind: Role      # Tipo de recurso: Role
+    name: pod-reader  # Nombre del Role (debe existir en el mismo namespace)
+    apiGroup: rbac.authorization.k8s.io  # Grupo de API para RBAC
+    # Este RoleBinding asigna el Role "pod-reader" al usuario "jane"
+    # jane puede leer Pods en el namespace "default"
+

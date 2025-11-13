@@ -1,0 +1,17 @@
+# Pod usando ConfigMap como variables de entorno
+# Todas las claves del ConfigMap se convierten en variables de entorno
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Pod       # Tipo de recurso: Pod
+metadata:       # Metadatos del Pod
+  name: app-pod  # Nombre del Pod
+spec:           # Especificación del Pod
+  containers:   # Lista de contenedores
+  - name: app     # Nombre del contenedor
+    image: myapp:latest  # Imagen de la aplicación
+    envFrom:      # Carga TODAS las claves del ConfigMap como variables de entorno
+    - configMapRef:  # Referencia al ConfigMap
+        name: app-config  # Nombre del ConfigMap a usar
+        # Nota: Cada clave del ConfigMap se convierte en una variable de entorno
+        # Ejemplo: database_url → DATABASE_URL, log_level → LOG_LEVEL
+

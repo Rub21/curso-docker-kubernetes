@@ -1,0 +1,16 @@
+# Pod con múltiples contenedores - Ejemplo de un Pod que contiene más de un contenedor
+# Los contenedores en un Pod comparten: red (misma IP), almacenamiento (volúmenes), namespace de procesos
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Pod       # Tipo de recurso: Pod
+metadata:       # Metadatos del Pod
+  name: multi-container-pod  # Nombre del Pod
+spec:           # Especificación del Pod
+  containers:   # Lista de contenedores (puede tener uno o más)
+  - name: nginx    # Primer contenedor: servidor web nginx
+    image: nginx:latest  # Imagen de nginx
+  - name: busybox  # Segundo contenedor: herramienta busybox (útil para debugging)
+    image: busybox:latest  # Imagen de busybox
+    command: ['sh', '-c', 'sleep 3600']  # Comando a ejecutar (mantiene el contenedor corriendo por 1 hora)
+    # Nota: Los contenedores en un Pod pueden comunicarse vía localhost
+

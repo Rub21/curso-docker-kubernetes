@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso de Kubernetes - De Básico a Avanzado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #326ce5 0%, #1e3a8a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .course-switcher {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .course-switcher a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .course-switcher a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .module-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #326ce5 0%, #1e3a8a 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .module-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .module-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .module-topics {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .module-topics li {
+            color: #555;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .module-topics li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #326ce5;
+            font-weight: bold;
+        }
+
+        .module-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #326ce5 0%, #1e3a8a 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(50, 108, 229, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☸️ Curso de Kubernetes</h1>
+            <p class="subtitle">De Básico a Avanzado por Ruben Lopez Mendoza - Rub21</p>
+        </header>
+
+        <div class="course-switcher">
+            <a href="index.html">🏠 Inicio</a>
+            <a href="docker.html">🐳 Ver Curso de Docker</a>
+        </div>
+
+        <div class="modules-grid">
+            <div class="module-card">
+                <span class="module-number">Intro</span>
+                <h2 class="module-title">Introducción</h2>
+                <p class="module-description">Presentación del instructor y visión general del curso.</p>
+                <ul class="module-topics">
+                    <li>Sobre el instructor</li>
+                    <li>Objetivo del curso</li>
+                    <li>Estructura y metodología</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/intro" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card" style="border: 3px solid #326ce5; background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);">
+                <span class="module-number" style="background: #326ce5;">📋 Requisitos</span>
+                <h2 class="module-title">Requisitos del Curso</h2>
+                <p class="module-description">Antes de comenzar, asegúrate de tener todo configurado correctamente.</p>
+                <ul class="module-topics">
+                    <li>Instalación de kubectl</li>
+                    <li>Instalación de minikube</li>
+                    <li>Extensiones de VS Code</li>
+                    <li>Verificar instalación</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/requisitos" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 00</span>
+                <h2 class="module-title">Conceptos Básicos</h2>
+                <p class="module-description">Comprende los conceptos fundamentales de Kubernetes antes de empezar.</p>
+                <ul class="module-topics">
+                    <li>¿Qué es Kubernetes?</li>
+                    <li>Arquitectura y componentes</li>
+                    <li>Pod, Node, Cluster</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/00-conceptos-basicos" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 01</span>
+                <h2 class="module-title">Primer Pod</h2>
+                <p class="module-description">Aprende a crear y gestionar tu primer Pod en Kubernetes.</p>
+                <ul class="module-topics">
+                    <li>Crear Pods con kubectl</li>
+                    <li>Verificar estado y logs</li>
+                    <li>Comandos básicos</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/01-primer-pod" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 02</span>
+                <h2 class="module-title">Deployments</h2>
+                <p class="module-description">Gestiona réplicas de Pods y actualizaciones sin downtime.</p>
+                <ul class="module-topics">
+                    <li>Crear Deployments</li>
+                    <li>Escalar aplicaciones</li>
+                    <li>Rolling updates y rollback</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/02-deployments" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 03</span>
+                <h2 class="module-title">Services</h2>
+                <p class="module-description">Exponer aplicaciones y permitir comunicación entre Pods.</p>
+                <ul class="module-topics">
+                    <li>Tipos de Services</li>
+                    <li>Service Discovery</li>
+                    <li>Balanceo de carga</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/03-services" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 04</span>
+                <h2 class="module-title">ConfigMaps y Secrets</h2>
+                <p class="module-description">Gestiona configuración y datos sensibles en Kubernetes.</p>
+                <ul class="module-topics">
+                    <li>Crear ConfigMaps</li>
+                    <li>Gestionar Secrets</li>
+                    <li>Usar en Pods</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/04-configmaps-secrets" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 05</span>
+                <h2 class="module-title">Volúmenes Persistentes</h2>
+                <p class="module-description">Almacenamiento persistente en Kubernetes.</p>
+                <ul class="module-topics">
+                    <li>PV y PVC</li>
+                    <li>Storage Classes</li>
+                    <li>Persistencia de datos</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/05-persistent-volumes" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 06</span>
+                <h2 class="module-title">Ingress</h2>
+                <p class="module-description">Exponer servicios HTTP/HTTPS externamente.</p>
+                <ul class="module-topics">
+                    <li>Ingress Controllers</li>
+                    <li>Rutas y reglas</li>
+                    <li>TLS/SSL</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/06-ingress" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 07</span>
+                <h2 class="module-title">Namespaces</h2>
+                <p class="module-description">Organización y multi-tenancy en Kubernetes.</p>
+                <ul class="module-topics">
+                    <li>Crear Namespaces</li>
+                    <li>Resource Quotas</li>
+                    <li>Organización</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/07-namespaces" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 08</span>
+                <h2 class="module-title">Helm</h2>
+                <p class="module-description">Gestor de paquetes para Kubernetes.</p>
+                <ul class="module-topics">
+                    <li>Charts y Releases</li>
+                    <li>Instalar aplicaciones</li>
+                    <li>Crear Charts</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/08-helm" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 09</span>
+                <h2 class="module-title">Monitoreo</h2>
+                <p class="module-description">Observabilidad y logging en Kubernetes.</p>
+                <ul class="module-topics">
+                    <li>Métricas y logs</li>
+                    <li>Prometheus y Grafana</li>
+                    <li>Debugging</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/09-monitoring" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 10</span>
+                <h2 class="module-title">Producción</h2>
+                <p class="module-description">Mejores prácticas para Kubernetes en producción.</p>
+                <ul class="module-topics">
+                    <li>Seguridad</li>
+                    <li>RBAC</li>
+                    <li>Estrategias de despliegue</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=kubernetes/10-produccion" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p style="margin-top: 10px; opacity: 0.8;">
+                <a href="notes.html">Notas</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

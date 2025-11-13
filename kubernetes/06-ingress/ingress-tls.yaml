@@ -1,0 +1,30 @@
+# Ingress con TLS/SSL
+# Configura HTTPS para el dominio
+# Requiere un Secret con el certificado TLS
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para Ingress
+kind: Ingress                      # Tipo de recurso: Ingress
+metadata:                          # Metadatos del Ingress
+  name: tls-ingress                # Nombre del Ingress
+spec:                              # Especificación del Ingress
+  tls:                             # Configuración TLS/SSL
+  - hosts:                         # Lista de hosts para este certificado
+    - example.com                  # Dominio que usará este certificado
+    secretName: tls-secret         # Nombre del Secret que contiene el certificado
+      # El Secret debe ser de tipo "kubernetes.io/tls"
+      # Contiene: tls.crt (certificado) y tls.key (clave privada)
+      # Crear con: kubectl create secret tls tls-secret --cert=tls.crt --key=tls.key
+  rules:                           # Reglas de routing (igual que sin TLS)
+  - host: example.com              # Dominio (debe coincidir con el host en tls)
+    http:                          # Configuración HTTP
+      paths:                       # Rutas
+      - path: /                    # Ruta raíz
+        pathType: Prefix           # Tipo: Prefix
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: web-service      # Service
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80
+              # El Ingress Controller termina SSL/TLS y envía HTTP al Service
+              # Cliente → HTTPS → Ingress (descifra) → HTTP → Service → Pods
+

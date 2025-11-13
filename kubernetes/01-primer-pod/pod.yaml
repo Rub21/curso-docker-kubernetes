@@ -1,0 +1,12 @@
+# Pod básico - Ejemplo simple de un Pod con un contenedor
+# Este archivo muestra la estructura mínima de un Pod en Kubernetes
+
+apiVersion: v1  # Versión de la API de Kubernetes (v1 es para recursos básicos como Pods)
+kind: Pod       # Tipo de recurso que estamos creando (Pod es la unidad más pequeña en K8s)
+metadata:       # Metadatos del Pod (información descriptiva)
+  name: nginx-pod  # Nombre único del Pod dentro del namespace (debe ser único)
+spec:           # Especificación del Pod (qué debe contener y cómo debe comportarse)
+  containers:   # Lista de contenedores que correrán dentro del Pod
+  - name: nginx    # Nombre del contenedor dentro del Pod (útil para identificar contenedores en Pods multi-contenedor)
+    image: nginx:latest  # Imagen Docker a usar (nginx:latest = última versión de nginx)
+

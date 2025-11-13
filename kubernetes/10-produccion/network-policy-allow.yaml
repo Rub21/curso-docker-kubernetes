@@ -1,0 +1,26 @@
+# NetworkPolicy - Permitir Tráfico Específico
+# Permite tráfico solo desde Pods específicos y en puertos específicos
+# Implementa el principio de menor privilegio en la red
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para NetworkPolicies
+kind: NetworkPolicy  # Tipo de recurso: NetworkPolicy
+metadata:              # Metadatos del NetworkPolicy
+  name: allow-frontend  # Nombre del NetworkPolicy
+spec:                  # Especificación del NetworkPolicy
+  podSelector:         # Selector de Pods a los que aplica esta política
+    matchLabels:       # Labels que deben coincidir
+      app: frontend    # Solo aplica a Pods con label app: frontend
+      # Esta política protege los Pods de frontend
+  ingress:             # Reglas de tráfico entrante (qué tráfico permitir)
+  - from:              # Fuentes permitidas
+    - podSelector:     # Permite tráfico desde Pods con estos labels
+        matchLabels:   # Labels que deben tener los Pods fuente
+          app: backend # Solo permite tráfico desde Pods con app: backend
+        # Frontend solo puede recibir tráfico desde backend
+    ports:             # Puertos permitidos
+    - protocol: TCP    # Protocolo: TCP
+      port: 8080       # Puerto 8080
+        # Solo permite tráfico TCP en puerto 8080
+        # Otros puertos y protocolos están bloqueados
+        # Ejemplo: Backend puede conectarse a frontend:8080, pero no a frontend:9090
+

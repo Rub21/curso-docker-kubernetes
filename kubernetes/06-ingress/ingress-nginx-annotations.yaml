@@ -1,0 +1,37 @@
+# Ingress con Annotations de Nginx
+# Ejemplo de configuración avanzada usando annotations específicas del Nginx Ingress Controller
+# Las annotations varían según el Ingress Controller que uses
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para Ingress
+kind: Ingress                      # Tipo de recurso: Ingress
+metadata:                          # Metadatos del Ingress
+  name: nginx-ingress              # Nombre del Ingress
+  annotations:                     # Anotaciones específicas del Nginx Ingress Controller
+    nginx.ingress.kubernetes.io/rewrite-target: /  # Reescribe la URL antes de enviar al Service
+      # Útil cuando el Service espera una ruta diferente
+      # Ejemplo: /api/users → reescribe a / → Service recibe /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Redirige HTTP a HTTPS automáticamente
+      # Si alguien accede vía HTTP, redirige a HTTPS
+      # Útil para forzar HTTPS
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"  # Fuerza redirección a HTTPS
+      # Similar a ssl-redirect pero más estricto
+      # Redirige incluso si no hay certificado configurado
+      # Útil para desarrollo/testing
+      # Otras annotations útiles:
+      # - nginx.ingress.kubernetes.io/rate-limit: "100" (limitar requests)
+      # - nginx.ingress.kubernetes.io/cors-allow-origin: "*" (CORS)
+      # - nginx.ingress.kubernetes.io/auth-type: "basic" (autenticación)
+spec:                              # Especificación del Ingress
+  rules:                           # Reglas de routing
+  - host: example.com              # Dominio
+    http:                          # Configuración HTTP
+      paths:                       # Rutas
+      - path: /                    # Ruta raíz
+        pathType: Prefix           # Tipo: Prefix
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: web-service      # Service
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80
+              # Nota: Revisa la documentación de tu Ingress Controller para annotations disponibles
+

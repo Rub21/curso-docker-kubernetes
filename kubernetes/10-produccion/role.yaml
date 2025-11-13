@@ -1,0 +1,21 @@
+# Role - Permisos a nivel de Namespace
+# Define qué acciones (verbs) se pueden realizar sobre qué recursos
+# Se aplica solo al namespace especificado
+
+apiVersion: rbac.authorization.k8s.io/v1  # Versión de la API para RBAC
+kind: Role  # Tipo de recurso: Role (permisos a nivel de namespace)
+metadata:   # Metadatos del Role
+  name: pod-reader  # Nombre del Role
+  namespace: default  # Namespace al que aplica este Role
+    # Los permisos de este Role solo aplican al namespace "default"
+spec:       # Especificación del Role
+  rules:    # Lista de reglas de permisos
+  - apiGroups: [""]  # Grupo de API ("" = core API group, v1)
+    resources: ["pods"]  # Recursos sobre los que aplica (pods)
+    verbs: ["get", "watch", "list"]  # Acciones permitidas
+      # get = leer un recurso específico
+      # watch = observar cambios en recursos
+      # list = listar recursos
+      # Otros verbs comunes: create, update, patch, delete
+      # Este Role permite leer Pods pero NO crearlos, actualizarlos o eliminarlos
+

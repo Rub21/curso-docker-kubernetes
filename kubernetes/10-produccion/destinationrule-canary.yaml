@@ -1,0 +1,31 @@
+# DestinationRule de Istio - Define subsets (versiones) para Canary
+# Complementa el VirtualService definiendo qué Pods pertenecen a cada subset
+# Los subsets se identifican por labels en los Pods
+# Requiere Istio instalado en el cluster
+
+apiVersion: networking.istio.io/v1alpha3  # Versión de la API de Istio
+kind: DestinationRule  # Tipo de recurso: DestinationRule (define subsets y políticas)
+metadata:               # Metadatos del DestinationRule
+  name: myapp           # Nombre del DestinationRule (debe coincidir con el host del VirtualService)
+spec:                   # Especificación del DestinationRule
+  host: myapp           # Service al que aplica (debe existir)
+    # Este DestinationRule define subsets para el Service "myapp"
+  subsets:              # Lista de subsets (versiones)
+  - name: v1            # Nombre del subset: v1 (versión estable)
+    labels:             # Labels que deben tener los Pods para pertenecer a este subset
+      version: v1       # Pods con label version: v1 pertenecen a este subset
+      # Los Pods del Deployment con versión estable deben tener label version: v1
+  - name: v2            # Nombre del subset: v2 (nueva versión en canary)
+    labels:             # Labels que deben tener los Pods para pertenecer a este subset
+      version: v2       # Pods con label version: v2 pertenecen a este subset
+      # Los Pods del Deployment con nueva versión deben tener label version: v2
+    # Cómo funciona:
+    # 1. Tienes dos Deployments: uno con label version: v1, otro con version: v2
+    # 2. Ambos Deployments exponen el mismo Service "myapp"
+    # 3. Este DestinationRule define qué Pods son v1 y cuáles son v2
+    # 4. El VirtualService usa estos subsets para enrutar tráfico
+    # Ejemplo de Deployment v1:
+    #   labels: { app: myapp, version: v1 }
+    # Ejemplo de Deployment v2:
+    #   labels: { app: myapp, version: v2 }
+

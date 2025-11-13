@@ -1,0 +1,18 @@
+# Service - NodePort
+# Expone el Service en un puerto del Node, accesible desde fuera del cluster
+# Útil para desarrollo y testing, NO recomendado para producción (usa Ingress o LoadBalancer)
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Service    # Tipo de recurso: Service
+metadata:        # Metadatos del Service
+  name: nginx-service  # Nombre del Service
+spec:            # Especificación del Service
+  type: NodePort  # Tipo de Service (expone puerto en cada Node)
+  selector:      # Selector para encontrar los Pods
+    app: nginx   # Label que deben tener los Pods
+  ports:         # Lista de puertos
+  - port: 80     # Puerto del Service (interno)
+    targetPort: 80  # Puerto del Pod (donde la aplicación escucha)
+    nodePort: 30080  # Puerto expuesto en cada Node (rango válido: 30000-32767)
+    # Accesible desde fuera del cluster en: <NODE_IP>:30080
+

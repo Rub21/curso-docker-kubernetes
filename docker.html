@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso de Docker - De Básico a Avanzado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .course-switcher {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .course-switcher a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .course-switcher a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .module-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .module-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .module-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .module-topics {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .module-topics li {
+            color: #555;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .module-topics li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .module-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐳 Curso de Docker</h1>
+            <p class="subtitle">De Básico a Avanzado por Ruben Lopez Mendoza - Rub21</p>
+        </header>
+
+        <div class="course-switcher">
+            <a href="index.html">🏠 Inicio</a>
+            <a href="index-kubernetes.html">☸️ Ver Curso de Kubernetes</a>
+        </div>
+
+        <div class="modules-grid">
+            <div class="module-card">
+                <span class="module-number">Intro</span>
+                <h2 class="module-title">Introducción</h2>
+                <p class="module-description">Presentación del instructor y visión general del curso.</p>
+                <ul class="module-topics">
+                    <li>Sobre el instructor</li>
+                    <li>Objetivo del curso</li>
+                    <li>Estructura y metodología</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/intro" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card" style="border: 3px solid #667eea; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);">
+                <span class="module-number" style="background: #667eea;">📋 Requisitos</span>
+                <h2 class="module-title">Requisitos del Curso</h2>
+                <p class="module-description">Antes de comenzar, asegúrate de tener todo configurado correctamente.</p>
+                <ul class="module-topics">
+                    <li>Cuenta de GitHub</li>
+                    <li>GitHub Codespaces</li>
+                    <li>Extensiones de VS Code</li>
+                    <li>Verificar instalación</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/requisitos" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 00</span>
+                <h2 class="module-title">Conceptos Básicos</h2>
+                <p class="module-description">Comprende los conceptos fundamentales de Docker antes de empezar.</p>
+                <ul class="module-topics">
+                    <li>¿Qué es Docker?</li>
+                    <li>Imagen vs Contenedor</li>
+                    <li>Ventajas y casos de uso</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/00-conceptos-basicos" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 01</span>
+                <h2 class="module-title">Primer Contenedor Sencillo</h2>
+                <p class="module-description">Aprende a ejecutar tu primer contenedor Docker y los comandos fundamentales.</p>
+                <ul class="module-topics">
+                    <li>Comandos básicos</li>
+                    <li>Imagen vs Contenedor</li>
+                    <li>Contenedores interactivos</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/01-primer-contenedor" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 02</span>
+                <h2 class="module-title">Dockerfile Básico</h2>
+                <p class="module-description">Crea tus propias imágenes Docker usando Dockerfile.</p>
+                <ul class="module-topics">
+                    <li>Sintaxis de Dockerfile</li>
+                    <li>FROM, RUN, COPY, CMD</li>
+                    <li>Construir imágenes</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/02-dockerfile-basico" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 03</span>
+                <h2 class="module-title">Volúmenes</h2>
+                <p class="module-description">Aprende a persistir datos y compartir archivos entre host y contenedor.</p>
+                <ul class="module-topics">
+                    <li>Bind mounts</li>
+                    <li>Named volumes</li>
+                    <li>Persistencia de datos</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/03-volumenes" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 04</span>
+                <h2 class="module-title">Redes</h2>
+                <p class="module-description">Gestiona redes Docker para conectar contenedores entre sí.</p>
+                <ul class="module-topics">
+                    <li>Tipos de redes</li>
+                    <li>Redes personalizadas</li>
+                    <li>Comunicación entre contenedores</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/04-redes" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 05</span>
+                <h2 class="module-title">Docker Compose Básico</h2>
+                <p class="module-description">Orquesta múltiples contenedores con un solo archivo.</p>
+                <ul class="module-topics">
+                    <li>docker-compose.yml</li>
+                    <li>Servicios y volúmenes</li>
+                    <li>Comandos básicos</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/05-docker-compose-basico" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 06</span>
+                <h2 class="module-title">Multi-Stage Builds</h2>
+                <p class="module-description">Crea imágenes Docker más pequeñas y optimizadas.</p>
+                <ul class="module-topics">
+                    <li>Múltiples etapas</li>
+                    <li>Reducir tamaño</li>
+                    <li>Optimización</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/06-multi-stage-builds" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 07</span>
+                <h2 class="module-title">Docker Compose Avanzado</h2>
+                <p class="module-description">Configuraciones avanzadas para aplicaciones complejas.</p>
+                <ul class="module-topics">
+                    <li>Override files</li>
+                    <li>Healthchecks</li>
+                    <li>Escalado de servicios</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/07-docker-compose-avanzado" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 08</span>
+                <h2 class="module-title">Optimización de Imágenes</h2>
+                <p class="module-description">Técnicas avanzadas para optimizar tamaño y rendimiento.</p>
+                <ul class="module-topics">
+                    <li>Reducir tamaño</li>
+                    <li>Mejorar tiempos de build</li>
+                    <li>.dockerignore</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/08-optimizacion-imagenes" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 09</span>
+                <h2 class="module-title">Healthchecks y Logging</h2>
+                <p class="module-description">Implementa healthchecks y gestiona logs en contenedores.</p>
+                <ul class="module-topics">
+                    <li>Healthchecks</li>
+                    <li>Gestión de logs</li>
+                    <li>Drivers de logging</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/09-healthchecks-logging" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+
+            <div class="module-card">
+                <span class="module-number">Módulo 10</span>
+                <h2 class="module-title">Producción y Mejores Prácticas</h2>
+                <p class="module-description">Mejores prácticas para ejecutar Docker en producción.</p>
+                <ul class="module-topics">
+                    <li>Seguridad</li>
+                    <li>Gestión de secrets</li>
+                    <li>Estrategias de despliegue</li>
+                </ul>
+                <div class="module-links">
+                    <a href="viewer.html?module=docker/10-produccion-mejores-practicas" class="btn btn-secondary">Ver Slides</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p style="margin-top: 10px; opacity: 0.8;">
+                <a href="notes.html">Notas</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

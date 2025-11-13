@@ -1,0 +1,26 @@
+# templates/_helpers.tpl - Funciones helper de Helm
+# Define funciones reutilizables que se pueden usar en múltiples templates
+# Convención: nombre del archivo debe empezar con _ (underscore)
+
+# Define una función helper llamada "my-app.labels"
+# Se puede usar en otros templates con: {{- include "my-app.labels" . | nindent 4 }}
+{{- define "my-app.labels" -}}
+app: {{ .Chart.Name }}      # Label app con el nombre del Chart
+version: {{ .Chart.AppVersion }}  # Label version con la versión de la aplicación
+  # {{ .Chart.Name }} = nombre del Chart (my-app)
+  # {{ .Chart.AppVersion }} = versión de la aplicación (1.0.0)
+  # Estas variables están disponibles en todos los templates
+{{- end -}}
+  # La función define labels comunes que se pueden reutilizar
+  # Útil para mantener consistencia en labels entre recursos
+
+# Ejemplo de uso en templates/deployment.yaml:
+# metadata:
+#   labels:
+#     {{- include "my-app.labels" . | nindent 4 }}
+#     # include llama a la función helper
+#     # | nindent 4 agrega indentación de 4 espacios
+#     # Resultado:
+#     #   app: my-app
+#     #   version: 1.0.0
+

@@ -1,0 +1,27 @@
+# DaemonSet para Logging - Fluentd
+# Un DaemonSet ejecuta un Pod en cada Node del cluster
+# Útil para recolectar logs de todos los Nodes
+# Fluentd recolecta logs y los envía a sistemas centralizados (Elasticsearch, etc.)
+
+apiVersion: apps/v1  # Versión de la API para DaemonSets
+kind: DaemonSet       # Tipo de recurso: DaemonSet (un Pod por Node)
+metadata:             # Metadatos del DaemonSet
+  name: fluentd       # Nombre del DaemonSet
+spec:                 # Especificación del DaemonSet
+  selector:           # Selector para identificar Pods gestionados
+    matchLabels:      # Labels que deben coincidir
+      app: fluentd    # Label app: fluentd
+  template:           # Plantilla para crear Pods (similar a Deployment)
+    metadata:         # Metadatos del Pod
+      labels:         # Labels del Pod
+        app: fluentd  # Label app (debe coincidir con selector)
+    spec:             # Especificación del Pod
+      containers:     # Lista de contenedores
+      - name: fluentd  # Nombre del contenedor
+        image: fluent/fluentd-kubernetes-daemonset  # Imagen de Fluentd
+        # Fluentd recolecta logs de:
+        # - /var/log/containers/* (logs de contenedores)
+        # - /var/log/pods/* (logs de Pods)
+        # Y los envía a sistemas centralizados configurados
+        # Nota: Este es un ejemplo simplificado, la configuración real requiere más detalles
+

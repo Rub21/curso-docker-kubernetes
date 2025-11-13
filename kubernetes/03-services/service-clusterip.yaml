@@ -1,0 +1,16 @@
+# Service - ClusterIP (tipo por defecto)
+# Expone un conjunto de Pods como un servicio de red con IP y DNS estables
+# Solo accesible desde dentro del cluster (comunicación interna)
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Service    # Tipo de recurso: Service (expone Pods como servicio de red)
+metadata:        # Metadatos del Service
+  name: nginx-service  # Nombre del Service (se usa para Service Discovery)
+spec:            # Especificación del Service
+  type: ClusterIP  # Tipo de Service (ClusterIP es el default, IP interna del cluster)
+  selector:      # Selector para encontrar los Pods que expone este Service
+    app: nginx   # Label que deben tener los Pods (debe coincidir con labels de los Pods)
+  ports:         # Lista de puertos que expone el Service
+  - port: 80     # Puerto del Service (lo que otros Pods usan para conectarse)
+    targetPort: 80  # Puerto del Pod (donde la aplicación escucha, puede ser diferente)
+

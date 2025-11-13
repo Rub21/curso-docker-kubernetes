@@ -1,0 +1,22 @@
+# Pod usando PersistentVolumeClaim (PVC)
+# El PVC se monta como un volumen en el Pod
+# Los datos persisten incluso si el Pod se elimina
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Pod       # Tipo de recurso: Pod
+metadata:       # Metadatos del Pod
+  name: pod-with-pvc  # Nombre del Pod
+spec:           # Especificación del Pod
+  containers:   # Lista de contenedores
+  - name: app     # Nombre del contenedor
+    image: nginx  # Imagen Docker
+    volumeMounts:  # Monta volúmenes en el contenedor
+    - name: storage  # Nombre del volumen (debe coincidir con volumes)
+      mountPath: /data  # Dónde se monta en el contenedor
+      # Los datos escritos aquí persisten en el PVC
+  volumes:      # Define los volúmenes a montar
+  - name: storage  # Nombre del volumen
+    persistentVolumeClaim:  # Volumen desde PVC
+      claimName: pvc-example  # Nombre del PVC a usar
+      # El PVC debe estar en estado "Bound" (vinculado a un PV)
+

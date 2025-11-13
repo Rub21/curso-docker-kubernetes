@@ -1,0 +1,18 @@
+# PersistentVolumeClaim (PVC) - Solicitud de almacenamiento
+# Creado por usuarios para solicitar almacenamiento
+# Kubernetes encuentra automáticamente un PV disponible que coincida
+# El PVC debe coincidir con el PV en: tamaño (≥ solicitado), modo de acceso, etc.
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: PersistentVolumeClaim  # Tipo de recurso: PersistentVolumeClaim (solicitud de almacenamiento)
+metadata:       # Metadatos del PVC
+  name: pvc-example  # Nombre del PVC (debe ser único en el namespace)
+spec:           # Especificación del PVC
+  accessModes:  # Modos de acceso que necesitas
+  - ReadWriteOnce  # Debe coincidir con un PV disponible
+  resources:    # Recursos solicitados
+    requests:   # Solicitud de recursos
+      storage: 5Gi  # Tamaño de almacenamiento solicitado (5 Gibibytes)
+      # Kubernetes encuentra un PV que tenga al menos este tamaño
+      # Ejemplo: Solicita 5Gi → encuentra PV de 10Gi (si coincide en otros aspectos)
+

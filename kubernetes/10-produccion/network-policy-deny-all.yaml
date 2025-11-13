@@ -1,0 +1,19 @@
+# NetworkPolicy - Denegar Todo el Tráfico
+# Aísla Pods bloqueando todo el tráfico de entrada y salida
+# Útil como política base: denegar todo y luego permitir específicamente lo necesario
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para NetworkPolicies
+kind: NetworkPolicy  # Tipo de recurso: NetworkPolicy (controla tráfico de red)
+metadata:              # Metadatos del NetworkPolicy
+  name: deny-all       # Nombre del NetworkPolicy
+spec:                  # Especificación del NetworkPolicy
+  podSelector: {}      # Selector de Pods (vacío = todos los Pods en el namespace)
+    # Aplica a todos los Pods en el namespace
+    # Si especificas labels, solo aplica a Pods con esos labels
+  policyTypes:         # Tipos de políticas
+  - Ingress            # Política de tráfico entrante (bloquea todo el tráfico entrante)
+  - Egress             # Política de tráfico saliente (bloquea todo el tráfico saliente)
+    # Esta NetworkPolicy bloquea TODO el tráfico (entrante y saliente)
+    # Útil como política base: primero bloquea todo, luego permite específicamente lo necesario
+    # ⚠️ CUIDADO: Esto puede romper aplicaciones si no configuras reglas de permitir después
+

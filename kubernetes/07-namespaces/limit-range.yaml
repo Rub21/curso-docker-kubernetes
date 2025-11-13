@@ -1,0 +1,22 @@
+# LimitRange - Define límites por recurso individual
+# Establece límites y defaults para recursos individuales (Pods, Containers)
+# Complementa ResourceQuota (que limita por namespace)
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: LimitRange  # Tipo de recurso: LimitRange (límites por recurso individual)
+metadata:        # Metadatos del LimitRange
+  name: limits-desarrollo  # Nombre del LimitRange
+  namespace: desarrollo  # Namespace al que aplica este LimitRange
+spec:            # Especificación del LimitRange
+  limits:        # Lista de límites
+  - default:     # Valores por defecto para limits (si el Pod no especifica limits)
+      memory: "512Mi"  # Límite de memoria por defecto (512 Mebibytes)
+      cpu: "500m"      # Límite de CPU por defecto (500 millicores = 0.5 cores)
+    defaultRequest:  # Valores por defecto para requests (si el Pod no especifica requests)
+      memory: "256Mi"  # Request de memoria por defecto (256 Mebibytes)
+      cpu: "250m"      # Request de CPU por defecto (250 millicores = 0.25 cores)
+    type: Container  # Tipo de recurso al que aplica (Container, Pod, PersistentVolumeClaim)
+    # Si un Pod no especifica resources, usa estos valores por defecto
+    # Útil para asegurar que todos los Pods tengan recursos definidos
+    # Complementa ResourceQuota: LimitRange = por recurso, ResourceQuota = por namespace
+

@@ -1,0 +1,31 @@
+# Ingress con Routing Basado en Rutas
+# Enruta diferentes rutas a diferentes Services
+# Muy útil para microservicios y aplicaciones con múltiples servicios
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para Ingress
+kind: Ingress                      # Tipo de recurso: Ingress
+metadata:                          # Metadatos del Ingress
+  name: path-based-ingress         # Nombre del Ingress
+spec:                              # Especificación del Ingress
+  rules:                           # Lista de reglas de routing
+  - host: example.com              # Dominio para estas rutas
+    http:                          # Configuración HTTP
+      paths:                       # Lista de rutas (orden importa: más específicas primero)
+      - path: /api                 # Primera ruta: /api y todo lo que empiece con /api
+        pathType: Prefix           # Tipo: Prefix (coincide con /api, /api/v1, /api/users, etc.)
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: api-service      # Service para la API (debe existir)
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80 del api-service
+              # Requests a /api/* se enrutan a api-service:80
+      - path: /web                 # Segunda ruta: /web y todo lo que empiece con /web
+        pathType: Prefix           # Tipo: Prefix
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: web-service      # Service para la aplicación web (debe existir)
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80 del web-service
+              # Requests a /web/* se enrutan a web-service:80
+              # Nota: El orden importa - las rutas más específicas deben ir primero
+

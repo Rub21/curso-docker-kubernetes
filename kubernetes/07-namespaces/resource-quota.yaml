@@ -1,0 +1,24 @@
+# ResourceQuota - Limita recursos por Namespace
+# Previene que un namespace use demasiados recursos del cluster
+# Esencial para multi-tenancy y garantizar recursos para producción
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: ResourceQuota  # Tipo de recurso: ResourceQuota (límites de recursos por namespace)
+metadata:        # Metadatos del ResourceQuota
+  name: quota-desarrollo  # Nombre del ResourceQuota
+  namespace: desarrollo  # Namespace al que aplica este ResourceQuota
+    # El ResourceQuota limita recursos solo en este namespace
+spec:            # Especificación del ResourceQuota
+  hard:          # Límites duros (no se pueden exceder)
+    requests.cpu: "4"      # Total de CPU requests permitidos en el namespace (4 cores)
+    requests.memory: 8Gi   # Total de memoria requests permitidos en el namespace (8 Gibibytes)
+    limits.cpu: "8"        # Total de CPU limits permitidos en el namespace (8 cores)
+    limits.memory: 16Gi    # Total de memoria limits permitidos en el namespace (16 Gibibytes)
+    pods: "10"             # Máximo número de Pods permitidos en el namespace
+    services: "5"           # Máximo número de Services permitidos en el namespace
+    # Otros recursos que se pueden limitar:
+    # - persistentvolumeclaims: número de PVCs
+    # - requests.storage: almacenamiento total solicitado
+    # - count/deployments.apps: número de Deployments
+    # Si un recurso intenta exceder estos límites, Kubernetes rechaza la creación
+

@@ -1,0 +1,18 @@
+# Este archivo se usa automáticamente en desarrollo
+# docker compose up usa docker-compose.yml + docker-compose.override.yml
+
+services:
+  web:
+    volumes:
+      - ./app:/app  # Hot reload en desarrollo
+      - /app/node_modules  # Preservar node_modules del contenedor
+    environment:
+      - DEBUG=true
+      - FLASK_ENV=development
+
+  db:
+    ports:
+      - "5432:5432"  # Exponer puerto en desarrollo para acceso directo
+    environment:
+      POSTGRES_PASSWORD: dev_password
+

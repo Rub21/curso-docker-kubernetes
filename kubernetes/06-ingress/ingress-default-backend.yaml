@@ -1,0 +1,31 @@
+# Ingress con Default Backend
+# Define un Service al que enrutar cuando no hay coincidencia con ninguna regla
+# Útil para manejar rutas no encontradas (404) con una página personalizada
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para Ingress
+kind: Ingress                      # Tipo de recurso: Ingress
+metadata:                          # Metadatos del Ingress
+  name: default-backend-ingress   # Nombre del Ingress
+spec:                              # Especificación del Ingress
+  defaultBackend:                  # Service por defecto (cuando no hay coincidencia)
+    service:                       # Referencia al Service
+      name: default-service        # Service que maneja rutas no encontradas
+      port:                        # Puerto del Service
+        number: 80                 # Puerto 80
+        # Este Service se usa cuando:
+        # - Request no coincide con ninguna regla
+        # - Útil para mostrar página 404 personalizada
+        # - Útil para logging de requests no encontrados
+  rules:                           # Reglas de routing
+  - host: example.com              # Dominio
+    http:                          # Configuración HTTP
+      paths:                       # Rutas
+      - path: /                    # Ruta raíz
+        pathType: Prefix           # Tipo: Prefix
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: web-service      # Service principal
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80
+              # Flujo: Request a / → web-service, Request a /unknown → default-service
+

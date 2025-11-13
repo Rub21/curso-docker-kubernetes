@@ -1,0 +1,34 @@
+# Ingress con Múltiples Hosts
+# Enruta diferentes dominios a diferentes Services
+# Útil para multi-tenant, separación por servicio, o ambientes
+
+apiVersion: networking.k8s.io/v1  # Versión de la API para Ingress
+kind: Ingress                      # Tipo de recurso: Ingress
+metadata:                          # Metadatos del Ingress
+  name: multi-host-ingress         # Nombre del Ingress
+spec:                              # Especificación del Ingress
+  rules:                           # Lista de reglas (cada regla puede tener un host diferente)
+  - host: api.example.com          # Primer dominio: API
+    http:                          # Configuración HTTP para este host
+      paths:                       # Rutas para este host
+      - path: /                    # Ruta raíz
+        pathType: Prefix           # Tipo: Prefix
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: api-service      # Service de la API
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80
+              # Requests a api.example.com/* se enrutan a api-service:80
+  - host: web.example.com          # Segundo dominio: Web
+    http:                          # Configuración HTTP para este host
+      paths:                       # Rutas para este host
+      - path: /                    # Ruta raíz
+        pathType: Prefix           # Tipo: Prefix
+        backend:                   # Service al que enrutar
+          service:                 # Referencia al Service
+            name: web-service      # Service de la aplicación web
+            port:                  # Puerto del Service
+              number: 80           # Puerto 80
+              # Requests a web.example.com/* se enrutan a web-service:80
+              # Nota: Debes configurar DNS para que estos dominios apunten al LoadBalancer del Ingress Controller
+

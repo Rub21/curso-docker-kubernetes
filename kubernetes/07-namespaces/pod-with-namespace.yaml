@@ -1,0 +1,18 @@
+# Pod con Namespace especificado
+# El Pod se crea en el namespace especificado en metadata
+# Si no especificas namespace, se crea en el namespace por defecto (default)
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Pod       # Tipo de recurso: Pod
+metadata:       # Metadatos del Pod
+  name: my-pod  # Nombre del Pod (debe ser único en el namespace)
+  namespace: desarrollo  # Namespace donde se crea el Pod
+    # Si no especificas namespace, se usa el namespace por defecto
+    # Puedes cambiar el namespace por defecto con: kubectl config set-context --current --namespace=desarrollo
+spec:           # Especificación del Pod
+  containers:   # Lista de contenedores
+  - name: app     # Nombre del contenedor
+    image: nginx  # Imagen Docker
+    # Nota: Los recursos en diferentes namespaces están aislados lógicamente
+    # Pero pueden comunicarse vía Services usando el nombre completo: service-name.namespace.svc.cluster.local
+

@@ -1,0 +1,19 @@
+# Service - LoadBalancer
+# Crea un balanceador de carga externo (requiere soporte del cloud provider)
+# Ideal para producción en cloud (AWS, GCP, Azure)
+# Obtiene una IP externa automáticamente
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Service    # Tipo de recurso: Service
+metadata:        # Metadatos del Service
+  name: nginx-service  # Nombre del Service
+spec:            # Especificación del Service
+  type: LoadBalancer  # Tipo de Service (crea balanceador externo)
+  selector:      # Selector para encontrar los Pods
+    app: nginx   # Label que deben tener los Pods
+  ports:         # Lista de puertos
+  - port: 80     # Puerto del Service
+    targetPort: 80  # Puerto del Pod
+    # Nota: El cloud provider crea automáticamente un balanceador de carga
+    # y asigna una IP externa (puede tardar unos minutos)
+

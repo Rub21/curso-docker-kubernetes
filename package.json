@@ -1,26 +1,26 @@
 {
   "name": "curso-docker",
   "version": "1.0.0",
-  "description": "Curso de Docker - De Básico a Avanzado",
+  "description": "Cursos de Docker y Kubernetes - De Básico a Avanzado",
   "scripts": {
     "start": "npx http-server -p 8000 -o --cors",
-    "serve": "npx http-server -p 8000 --cors",
-    "dev": "npx http-server -p 8000 -o --cors",
-    "slides:html": "marp */slides.md -o */slides.html",
-    "slides:pdf": "marp */slides.md --pdf -o */slides.pdf",
-    "slides:all": "npm run slides:html && npm run slides:pdf",
-    "reveal": "reveal-md */slides.md"
+    "live": "echo 'Servidor iniciado. Abre http://localhost:8000/viewer.html?module=intro&dev=true en tu navegador' && npx http-server -p 8000 --cors",
+    "build": "node scripts/build.js",
+    "deploy": "npm run build && gh-pages -d dist --dotfiles --no-history"
   },
   "keywords": [
     "docker",
+    "kubernetes",
     "curso",
     "tutorial",
-    "containers"
+    "containers",
+    "orchestration"
   ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@marp-team/marp-cli": "^3.0.0"
+    "@marp-team/marp-cli": "^3.0.0",
+    "gh-pages": "^6.1.1"
   }
 }
 

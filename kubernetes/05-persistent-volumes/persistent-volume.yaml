@@ -1,0 +1,22 @@
+# PersistentVolume (PV) - Recurso de almacenamiento del cluster
+# Creado por el administrador del cluster
+# Representa almacenamiento físico disponible (disco NFS, EBS, etc.)
+# ⚠️ hostPath es solo para desarrollo/testing, NO usar en producción
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: PersistentVolume  # Tipo de recurso: PersistentVolume (almacenamiento físico)
+metadata:       # Metadatos del PV
+  name: pv-example  # Nombre del PV (debe ser único en el cluster)
+spec:           # Especificación del PV
+  capacity:     # Capacidad del volumen
+    storage: 10Gi  # Tamaño del volumen (10 Gibibytes)
+  accessModes:  # Modos de acceso permitidos
+  - ReadWriteOnce  # Lectura-escritura por un solo Node (RWO es el más común)
+    # Otros modos: ReadOnlyMany (ROX), ReadWriteMany (RWX)
+  persistentVolumeReclaimPolicy: Retain  # Qué hacer cuando se elimina el PVC
+    # Retain = mantener volumen (requiere limpieza manual)
+    # Delete = eliminar automáticamente (requiere soporte del storage provider)
+  hostPath:     # Tipo de almacenamiento (hostPath = directorio del Node)
+    path: /data/pv-example  # Ruta en el Node donde se almacenan los datos
+    # ⚠️ Solo para desarrollo/testing, NO para producción
+

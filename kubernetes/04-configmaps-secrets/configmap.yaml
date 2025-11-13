@@ -1,0 +1,17 @@
+# ConfigMap - Almacena datos de configuración NO sensibles
+# Se puede usar como variables de entorno o archivos montados en Pods
+# Los valores están en texto plano (NO encriptado)
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: ConfigMap  # Tipo de recurso: ConfigMap (configuración no sensible)
+metadata:        # Metadatos del ConfigMap
+  name: app-config  # Nombre del ConfigMap (se usa para referenciarlo en Pods)
+data:            # Datos del ConfigMap (pares clave-valor)
+  # Valores simples (variables de entorno)
+  database_url: "postgresql://localhost:5432/mydb"  # URL de base de datos
+  log_level: "info"  # Nivel de logging
+  # Archivo completo (usando | para multi-línea)
+  config.properties: |  # Nombre del archivo (se creará como archivo cuando se monte)
+    server.port=8080    # Contenido del archivo (línea 1)
+    server.host=0.0.0.0  # Contenido del archivo (línea 2)
+

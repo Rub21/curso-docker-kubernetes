@@ -1,0 +1,22 @@
+# Deployment - Gestiona réplicas de Pods idénticos
+# Un Deployment asegura que siempre haya el número deseado de Pods corriendo
+# Si un Pod falla, el Deployment crea uno nuevo automáticamente
+
+apiVersion: apps/v1  # Versión de la API para Deployments (apps/v1 es la versión estable)
+kind: Deployment      # Tipo de recurso: Deployment (gestiona Pods)
+metadata:            # Metadatos del Deployment
+  name: nginx-deployment  # Nombre único del Deployment dentro del namespace
+spec:                # Especificación del Deployment
+  replicas: 3        # Número de Pods que queremos mantener corriendo (siempre habrá 3 Pods)
+  selector:          # Selector para identificar qué Pods gestiona este Deployment
+    matchLabels:     # Los Pods deben tener estos labels para ser gestionados
+      app: nginx    # Label que debe coincidir (app: nginx)
+  template:         # Plantilla para crear los Pods (es como un Pod YAML dentro del Deployment)
+    metadata:       # Metadatos que se aplicarán a cada Pod creado
+      labels:       # Labels que se aplicarán a cada Pod
+        app: nginx  # Label que debe coincidir con el selector (IMPORTANTE: debe coincidir)
+    spec:           # Especificación del Pod (igual que en un Pod normal)
+      containers:   # Lista de contenedores que correrán en cada Pod
+      - name: nginx   # Nombre del contenedor
+        image: nginx:1.20  # Imagen Docker a usar (versión específica: 1.20)
+

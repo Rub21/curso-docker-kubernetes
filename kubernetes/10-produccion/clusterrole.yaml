@@ -1,0 +1,19 @@
+# ClusterRole - Permisos a nivel de Cluster
+# Similar a Role pero aplica a todo el cluster (no solo un namespace)
+# Útil para permisos administrativos o recursos cluster-scoped
+
+apiVersion: rbac.authorization.k8s.io/v1  # Versión de la API para RBAC
+kind: ClusterRole  # Tipo de recurso: ClusterRole (permisos a nivel de cluster)
+metadata:           # Metadatos del ClusterRole
+  name: cluster-admin  # Nombre del ClusterRole
+  # No tiene namespace porque aplica a todo el cluster
+spec:               # Especificación del ClusterRole
+  rules:            # Lista de reglas de permisos
+  - apiGroups: [""]  # Grupo de API ("" = core API group)
+    resources: ["*"]  # Todos los recursos (wildcard)
+    verbs: ["*"]      # Todas las acciones (wildcard)
+      # Este ClusterRole da permisos completos sobre todos los recursos
+      # Es el equivalente a "root" o "administrador"
+      # ⚠️ CUIDADO: Solo asignar a usuarios de confianza
+      # En producción, usa permisos más restrictivos (principio de menor privilegio)
+

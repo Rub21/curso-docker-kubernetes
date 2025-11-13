@@ -1,0 +1,34 @@
+# templates/deployment.yaml - Template de Deployment para Helm
+# Este es un ejemplo de cómo se ve un template de Helm
+# Los valores entre {{ }} se reemplazan con valores de values.yaml o --set
+
+# Template de Helm usando sintaxis Go templates
+apiVersion: apps/v1  # Versión de la API para Deployments
+kind: Deployment     # Tipo de recurso: Deployment
+metadata:            # Metadatos del Deployment
+  name: {{ .Values.name }}  # Nombre del Deployment (usa valor de values.yaml)
+    # {{ .Values.name }} se reemplaza con el valor de name en values.yaml
+    # Ejemplo: Si name: my-app, resulta en name: my-app
+spec:                # Especificación del Deployment
+  replicas: {{ .Values.replicaCount }}  # Número de réplicas (usa valor de values.yaml)
+    # {{ .Values.replicaCount }} se reemplaza con el valor de replicaCount
+    # Ejemplo: Si replicaCount: 3, resulta en replicas: 3
+  selector:          # Selector para identificar Pods
+    matchLabels:     # Labels que deben coincidir
+      app: {{ .Values.name }}  # Label app con el nombre de la aplicación
+  template:         # Plantilla para crear Pods
+    metadata:       # Metadatos del Pod
+      labels:       # Labels del Pod
+        app: {{ .Values.name }}  # Label app (debe coincidir con selector)
+    spec:           # Especificación del Pod
+      containers:   # Lista de contenedores
+      - name: {{ .Chart.Name }}  # Nombre del contenedor (usa nombre del Chart)
+        # {{ .Chart.Name }} es una variable predefinida de Helm (nombre del Chart)
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}  # Imagen Docker
+          # Construye la imagen usando valores de values.yaml
+          # Ejemplo: nginx:1.21
+        ports:       # Puertos del contenedor
+        - containerPort: {{ .Values.service.port }}  # Puerto del contenedor
+          # Usa el puerto definido en values.yaml
+          # Ejemplo: 80
+

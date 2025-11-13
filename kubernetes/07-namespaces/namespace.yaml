@@ -1,0 +1,11 @@
+# Namespace - División lógica del cluster
+# Organiza recursos y permite aislamiento lógico
+# Útil para separar por ambiente, equipo, proyecto o cliente
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Namespace  # Tipo de recurso: Namespace (división lógica del cluster)
+metadata:        # Metadatos del Namespace
+  name: desarrollo  # Nombre del Namespace (debe ser único en el cluster)
+    # Ejemplos comunes: desarrollo, staging, produccion, equipo-frontend, proyecto-a
+    # Los nombres de recursos dentro del namespace deben ser únicos solo dentro del namespace
+

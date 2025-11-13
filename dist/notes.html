@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas de Orador - Curso Docker</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .header h1 {
+            display: none;
+        }
+
+        .header .module-info {
+            opacity: 0.95;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .notes-container {
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 600px;
+        }
+
+        .note-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #333;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .note-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .note-section h2 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .note-section .content {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .note-section .content ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .note-section .content li {
+            margin-bottom: 8px;
+        }
+
+        .note-section .content strong {
+            color: #a8b5ff;
+        }
+
+        .note-section .content em {
+            color: #ffd700;
+            font-style: italic;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(102, 126, 234, 0.9);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .controls button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .controls button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 600;
+            padding: 0 8px;
+            font-size: 0.85em;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #0f0;
+        }
+
+        .status.disconnected {
+            color: #f00;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .tips {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tips strong {
+            color: #a8b5ff;
+        }
+
+        .slide-preview {
+            background: #1a1a1a;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 10px;
+            max-width: 100%;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .slide-preview h3 {
+            display: none;
+        }
+
+        .slide-preview-content {
+            background: white;
+            color: #333;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            line-height: 1.5;
+            max-height: 200px;
+            overflow-y: auto;
+            transform: scale(0.6);
+            transform-origin: top left;
+            width: 166.67%; /* Compensar el scale */
+        }
+
+        .slide-preview-content h1 {
+            font-size: 1.3em;
+            margin-bottom: 6px;
+        }
+
+        .slide-preview-content h2 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .slide-preview-content p {
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .slide-preview-content ul, .slide-preview-content ol {
+            font-size: 0.8em;
+            margin-left: 12px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .slide-preview-content code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+
+        .slide-preview-content pre {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.75em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Notas de Orador</h1>
+            <div class="module-info">
+                <span id="module-name">Cargando...</span> | <span id="slide-info">Slide 1 / 1</span>
+            </div>
+        </div>
+
+        <div class="status" id="status">🟢 Conectado</div>
+
+        <div class="slide-preview" id="slide-preview" style="display: none;">
+            <h3>📊 Vista Previa del Slide</h3>
+            <div class="slide-preview-content" id="slide-preview-content">
+                Cargando...
+            </div>
+        </div>
+
+        <div class="notes-container" id="notes-container">
+            <div class="empty-state">
+                <h2>Cargando notas...</h2>
+                <p>Esperando sincronización con las slides</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="previousNote()">← Anterior</button>
+        <span class="slide-counter">
+            <span id="currentNote">1</span> / <span id="totalNotes">1</span>
+        </span>
+        <button onclick="nextNote()">Siguiente →</button>
+        <button onclick="reloadNotes()" title="Recargar notas (limpiar cache)">🔄 Recargar</button>
+    </div>
+
+    <script>
+        let currentNoteIndex = 0;
+        let notes = [];
+        let module = '';
+        let syncInterval;
+        let slidesData = [];
+        let markedLoaded = false;
+
+        // Obtener módulo de la URL o localStorage
+        function getModule() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Si hay parámetro ?reload=true, forzar recarga
+            if (urlParams.get('reload') === 'true') {
+                // Remover el parámetro de la URL
+                urlParams.delete('reload');
+                const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                window.history.replaceState({}, '', newUrl);
+            }
+            return urlParams.get('module') || localStorage.getItem('currentModule') || 'docker/00-conceptos-basicos';
+        }
+
+        // Sincronizar con slides
+        let isUpdating = false; // Prevenir loops de actualización
+        function syncWithSlides() {
+            if (isUpdating) return; // Prevenir actualizaciones simultáneas
+            
+            const slideIndex = localStorage.getItem('currentSlideIndex');
+            const currentModule = localStorage.getItem('currentModule');
+            
+            // Verificar si cambió el módulo
+            if (currentModule && currentModule !== module) {
+                loadNotes(currentModule);
+                return;
+            }
+            
+            // Verificar si cambió el slide
+            if (slideIndex !== null) {
+                const index = parseInt(slideIndex);
+                if (index !== currentNoteIndex && index >= 0 && notes[index]) {
+                    isUpdating = true;
+                    showNote(index);
+                    setTimeout(() => { isUpdating = false; }, 100);
+                }
+            }
+        }
+
+        // Escuchar cambios en localStorage (para ventanas diferentes)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'currentSlideIndex') {
+                const index = parseInt(e.newValue);
+                if (notes[index]) {
+                    showNote(index);
+                }
+            }
+            if (e.key === 'currentModule') {
+                loadNotes(e.newValue);
+            }
+        });
+
+        // También escuchar eventos personalizados (para misma ventana/pestaña)
+        window.addEventListener('slideChanged', (e) => {
+            if (e.detail && notes[e.detail.index]) {
+                showNote(e.detail.index);
+            }
+        });
+
+        // Cargar slides para la miniatura
+        async function loadSlides(moduleName) {
+            try {
+                // Agregar timestamp para evitar cache
+                const cacheBuster = `?t=${Date.now()}`;
+                const response = await fetch(`${moduleName}/slides.md${cacheBuster}`, { 
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                if (response.ok) {
+                    const text = await response.text();
+                    // Procesar slides de Marp (separados por ---)
+                    const slideContent = text.split(/^---$/m).filter(s => s.trim());
+                    
+                    // Filtrar el frontmatter si existe
+                    let slidesToProcess = slideContent;
+                    if (slideContent[0] && slideContent[0].includes('marp:')) {
+                        slidesToProcess = slideContent.slice(1);
+                    }
+                    
+                    slidesData = slidesToProcess.map(s => s.trim());
+                    return true;
+                }
+            } catch (error) {
+                console.log('No se pudieron cargar slides para preview');
+            }
+            return false;
+        }
+
+        // Actualizar miniatura del slide
+        function updateSlidePreview(slideIndex) {
+            const previewContainer = document.getElementById('slide-preview');
+            const previewContent = document.getElementById('slide-preview-content');
+            
+            if (slidesData.length > 0 && slideIndex >= 0 && slideIndex < slidesData.length) {
+                if (!markedLoaded && typeof marked !== 'undefined') {
+                    markedLoaded = true;
+                }
+                
+                if (markedLoaded) {
+                    const slideMarkdown = slidesData[slideIndex];
+                    const html = marked.parse(slideMarkdown);
+                    previewContent.innerHTML = html;
+                    previewContainer.style.display = 'block';
+                } else {
+                    const slideMarkdown = slidesData[slideIndex];
+                    previewContent.innerHTML = slideMarkdown.substring(0, 200) + '...';
+                    previewContainer.style.display = 'block';
+                }
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        }
+
+        // Cargar notas del módulo
+        async function loadNotes(moduleName) {
+            module = moduleName;
+            // Mostrar solo el nombre del módulo sin "Módulo:"
+            const moduleDisplay = moduleName.replace(/^\d{2}-/, '').replace(/-/g, ' ');
+            document.getElementById('module-name').textContent = moduleDisplay;
+            
+            // Cargar slides en paralelo
+            await loadSlides(moduleName);
+            
+            try {
+                // Agregar timestamp para evitar cache
+                const cacheBuster = `?t=${Date.now()}`;
+                const response = await fetch(`${moduleName}/speaker-notes.md${cacheBuster}`, { 
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('No se encontraron notas para este módulo');
+                }
+                
+                const text = await response.text();
+                parseNotes(text);
+            } catch (error) {
+                document.getElementById('notes-container').innerHTML = `
+                    <div class="empty-state">
+                        <h2>No hay notas disponibles</h2>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 20px; font-size: 0.9em;">
+                            Las notas se sincronizarán automáticamente cuando avances las slides
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Parsear notas del archivo markdown
+        function parseNotes(text) {
+            // Dividir por secciones que empiezan con ## Slide
+            const sections = text.split(/^## Slide \d+:/m).filter(s => s.trim());
+            const container = document.getElementById('notes-container');
+            container.innerHTML = '';
+
+            notes = [];
+
+            sections.forEach((section, index) => {
+                // Saltar el header si existe
+                if (index === 0 && section.match(/^# /)) {
+                    return;
+                }
+
+                const lines = section.trim().split('\n');
+                const title = lines[0] || `Slide ${index}`;
+                const content = lines.slice(1).join('\n').trim();
+
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'note-section';
+                noteDiv.id = `note-${index - 1}`;
+                
+                if (content) {
+                    noteDiv.innerHTML = `
+                        <h2>${title}</h2>
+                        <div class="content">${marked.parse(content)}</div>
+                    `;
+
+                    container.appendChild(noteDiv);
+                    notes.push(noteDiv);
+                }
+            });
+
+            document.getElementById('totalNotes').textContent = notes.length;
+            
+            // Sincronizar con slide actual
+            syncWithSlides();
+            
+            // Actualizar cada 800ms para mejor sincronización (reducido para evitar loops)
+            if (syncInterval) clearInterval(syncInterval);
+            syncInterval = setInterval(syncWithSlides, 800);
+        }
+
+        function showNote(index) {
+            if (index < 0 || index >= notes.length) return;
+
+            notes.forEach((note, i) => {
+                note.classList.remove('active');
+                if (i === index) {
+                    note.classList.add('active');
+                    note.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            currentNoteIndex = index;
+            document.getElementById('currentNote').textContent = index + 1;
+            document.getElementById('slide-info').textContent = `Slide ${index + 1} / ${notes.length}`;
+            
+            // Actualizar header compacto
+            const moduleDisplay = module.replace(/^\d{2}-/, '').replace(/-/g, ' ');
+            document.getElementById('module-name').textContent = moduleDisplay;
+            
+            // Actualizar miniatura del slide
+            updateSlidePreview(index);
+            
+            // Guardar en localStorage para sincronización (solo si cambió)
+            const oldNoteIndex = localStorage.getItem('currentNoteIndex');
+            if (oldNoteIndex !== String(index)) {
+                localStorage.setItem('currentNoteIndex', index);
+            }
+            
+            // Notificar a slides (sincronización bidireccional) - solo si cambió
+            const oldSlideIndex = localStorage.getItem('currentSlideIndex');
+            if (oldSlideIndex !== String(index)) {
+                localStorage.setItem('currentSlideIndex', index);
+            }
+            const oldModule = localStorage.getItem('currentModule');
+            if (oldModule !== module) {
+                localStorage.setItem('currentModule', module);
+            }
+            
+            // Disparar evento personalizado para mejor sincronización
+            window.dispatchEvent(new CustomEvent('slideChanged', { detail: { index } }));
+            
+            // También usar postMessage para ventanas diferentes
+            window.postMessage({ type: 'slideChanged', index: index }, '*');
+        }
+
+        function nextNote() {
+            if (currentNoteIndex < notes.length - 1) {
+                const newIndex = currentNoteIndex + 1;
+                showNote(newIndex);
+            }
+        }
+
+        function previousNote() {
+            if (currentNoteIndex > 0) {
+                const newIndex = currentNoteIndex - 1;
+                showNote(newIndex);
+            }
+        }
+
+        // Función para recargar notas y limpiar cache
+        function reloadNotes() {
+            if (module) {
+                // Limpiar datos actuales
+                notes = [];
+                slidesData = [];
+                document.getElementById('notes-container').innerHTML = '<div class="empty-state"><h2>Recargando notas...</h2></div>';
+                
+                // Recargar notas con cache busting
+                loadNotes(module);
+            }
+        }
+
+        // Navegación con teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextNote();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousNote();
+            }
+        });
+
+        // Escuchar mensajes de otras ventanas
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'slideChanged') {
+                const index = event.data.index;
+                if (index >= 0 && index < notes.length && index !== currentNoteIndex) {
+                    showNote(index);
+                }
+            }
+        });
+
+        // Inicializar
+        (async function() {
+            // Cargar marked.js si no está disponible
+            if (typeof marked === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+                document.head.appendChild(script);
+                await new Promise(resolve => {
+                    script.onload = () => {
+                        markedLoaded = true;
+                        resolve();
+                    };
+                });
+            } else {
+                markedLoaded = true;
+            }
+
+            const moduleName = getModule();
+            await loadNotes(moduleName);
+            
+            // Sincronizar con slide actual si existe
+            const currentSlide = localStorage.getItem('currentSlideIndex');
+            if (currentSlide !== null && notes.length > 0) {
+                const index = parseInt(currentSlide);
+                if (index >= 0 && index < notes.length) {
+                    showNote(index);
+                } else {
+                    showNote(0);
+                }
+            } else if (notes.length > 0) {
+                showNote(0);
+            }
+        })();
+    </script>
+</body>
+</html>
+

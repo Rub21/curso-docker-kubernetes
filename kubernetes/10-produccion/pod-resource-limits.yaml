@@ -1,0 +1,26 @@
+# Pod con Resource Limits y Requests
+# Define cuántos recursos (CPU y memoria) necesita y puede usar el contenedor
+# Esencial para producción: previene que un Pod consuma todos los recursos
+
+apiVersion: v1  # Versión de la API de Kubernetes
+kind: Pod       # Tipo de recurso: Pod
+spec:           # Especificación del Pod
+  containers:   # Lista de contenedores
+  - name: app     # Nombre del contenedor
+    image: myapp:latest  # Imagen de la aplicación
+    resources:   # Configuración de recursos
+      requests:  # Recursos solicitados (garantizados por Kubernetes)
+        memory: "256Mi"  # Memoria solicitada (256 Mebibytes)
+          # Kubernetes reserva esta cantidad de memoria para el contenedor
+          # Se usa para scheduling (decidir en qué Node colocar el Pod)
+        cpu: "250m"      # CPU solicitada (250 millicores = 0.25 cores)
+          # Kubernetes reserva esta cantidad de CPU para el contenedor
+          # 250m = 0.25 cores, 1000m = 1 core
+      limits:    # Límites máximos (no se puede exceder)
+        memory: "512Mi"  # Límite máximo de memoria (512 Mebibytes)
+          # Si el contenedor intenta usar más, será terminado (OOMKilled)
+        cpu: "500m"      # Límite máximo de CPU (500 millicores = 0.5 cores)
+          # Si el contenedor intenta usar más, será throttled (ralentizado)
+          # ⚠️ IMPORTANTE: Siempre define requests y limits en producción
+          # Previene que un Pod consuma todos los recursos del Node
+

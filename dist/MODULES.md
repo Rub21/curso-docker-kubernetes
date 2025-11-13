@@ -1,0 +1,31 @@
+# Módulos Compilados
+
+## Docker
+- [docker/00-conceptos-basicos/slides.html](docker/00-conceptos-basicos/slides.html)
+- [docker/01-primer-contenedor/slides.html](docker/01-primer-contenedor/slides.html)
+- [docker/02-dockerfile-basico/slides.html](docker/02-dockerfile-basico/slides.html)
+- [docker/03-volumenes/slides.html](docker/03-volumenes/slides.html)
+- [docker/04-redes/slides.html](docker/04-redes/slides.html)
+- [docker/05-docker-compose-basico/slides.html](docker/05-docker-compose-basico/slides.html)
+- [docker/06-multi-stage-builds/slides.html](docker/06-multi-stage-builds/slides.html)
+- [docker/07-docker-compose-avanzado/slides.html](docker/07-docker-compose-avanzado/slides.html)
+- [docker/08-optimizacion-imagenes/slides.html](docker/08-optimizacion-imagenes/slides.html)
+- [docker/09-healthchecks-logging/slides.html](docker/09-healthchecks-logging/slides.html)
+- [docker/10-produccion-mejores-practicas/slides.html](docker/10-produccion-mejores-practicas/slides.html)
+- [docker/intro/slides.html](docker/intro/slides.html)
+- [docker/requisitos/slides.html](docker/requisitos/slides.html)
+
+## Kubernetes
+- [kubernetes/00-conceptos-basicos/slides.html](kubernetes/00-conceptos-basicos/slides.html)
+- [kubernetes/01-primer-pod/slides.html](kubernetes/01-primer-pod/slides.html)
+- [kubernetes/02-deployments/slides.html](kubernetes/02-deployments/slides.html)
+- [kubernetes/03-services/slides.html](kubernetes/03-services/slides.html)
+- [kubernetes/04-configmaps-secrets/slides.html](kubernetes/04-configmaps-secrets/slides.html)
+- [kubernetes/05-persistent-volumes/slides.html](kubernetes/05-persistent-volumes/slides.html)
+- [kubernetes/06-ingress/slides.html](kubernetes/06-ingress/slides.html)
+- [kubernetes/07-namespaces/slides.html](kubernetes/07-namespaces/slides.html)
+- [kubernetes/08-helm/slides.html](kubernetes/08-helm/slides.html)
+- [kubernetes/09-monitoring/slides.html](kubernetes/09-monitoring/slides.html)
+- [kubernetes/10-produccion/slides.html](kubernetes/10-produccion/slides.html)
+- [kubernetes/intro/slides.html](kubernetes/intro/slides.html)
+- [kubernetes/requisitos/slides.html](kubernetes/requisitos/slides.html)

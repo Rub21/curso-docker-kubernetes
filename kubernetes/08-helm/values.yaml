@@ -1,0 +1,29 @@
+# values.yaml - Valores por defecto del Chart
+# Define valores configurables que se usan en los templates
+# Los usuarios pueden sobrescribir estos valores al instalar el Chart
+
+# Configuración del nombre de la aplicación
+name: my-app  # Nombre de la aplicación (se usa en templates)
+
+# Configuración de réplicas
+replicaCount: 3  # Número de réplicas del Deployment (por defecto 3)
+
+# Configuración de la imagen
+image:
+  repository: nginx  # Repositorio de la imagen Docker
+  tag: "1.21"       # Tag de la imagen (versión específica, no usar "latest")
+    # Se construye como: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+    # Resultado: nginx:1.21
+
+# Configuración del Service
+service:
+  type: ClusterIP  # Tipo de Service (ClusterIP, NodePort, LoadBalancer)
+  port: 80         # Puerto del Service
+    # Se usa en templates como: {{ .Values.service.port }}
+
+# Ejemplo de configuración adicional (comentado)
+# database:
+#   enabled: true
+#   host: postgresql
+#   port: 5432
+
